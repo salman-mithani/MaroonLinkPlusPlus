@@ -10,6 +10,7 @@ from collections import Counter
 from nltk.corpus import stopwords 
 from nltk.tokenize import word_tokenize
 from nltk.stem.porter import PorterStemmer
+from scipy import spatial
 
 stop_words = stopwords.words('english')
 stemmer = PorterStemmer()
@@ -124,16 +125,62 @@ def score(query, docs, all_tokens):
     return sorted_scores
     # return sorted_scores[0:10]
 
+# function that uses cos sim to get
+# the similar documents.
+def similar_orgs(docID,docs,tokens_and_counts):
+	scores = {}
+	for doc,tokens in docs.items():
+		if doc == docID:
+			continue
+		doc1vec = []
+		dec2vec = []
+		#print(docs[docID])
+		#print(tokens)
+		for word in docs[docID]:
+			if word in tokens:
+				doc1vec.append(1)
+				dec2vec.append(1)
+			## below we take into account the frequency of the words
+			## words more common will effect the score less
+			else:
+				doc1vec.append(1*(1/log10(tokens_and_counts[word]+1)))
+				dec2vec.append(0)
+		for word in tokens:
+			if word not in docs[docID]:
+				doc1vec.append(0)
+				dec2vec.append(1*(1/log10(tokens_and_counts[word]+1)))
+		scores[doc] = 1- spatial.distance.cosine(doc1vec,dec2vec)
+	
+	return sorted(scores.items(), key=operator.itemgetter(1),reverse =True)
+
+
 if __name__ == '__main__':
 	q = "sports"
 	words_and_counts = all_words_ranked(descriptions)
 	all_tokens = [word for word,count in words_and_counts]
 	docs = tokenize_dict(descriptionDict)
+	#print(docs)
 	results = score(q, docs, all_tokens)
+	testid = ""
 	i = 1
 	for docid,s in results:
-		if s == 0:
+		testid = docid
+		if i >= 51:
 			break
 		print(i, docid, s, "\n")
 		i += 1
+
+
+	print("tamect similar orgs:\n")
+	word_dict = dict(words_and_counts)
+	results2 = similar_orgs('tamect',docs,word_dict)
+	i = 1
+	for docid,s in results2:
+		testid = docid
+		if i >= 51:
+			break
+		print(i, docid, s, "\n")
+		i += 1
+
+
 
