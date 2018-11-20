@@ -12,6 +12,7 @@ from nltk.tokenize import word_tokenize
 from nltk.stem.porter import PorterStemmer
 from scipy import spatial
 
+nltk.download('stopwords')
 stop_words = stopwords.words('english')
 stemmer = PorterStemmer()
 
@@ -155,7 +156,7 @@ def similar_orgs(docID,docs,tokens_and_counts):
 
 
 if __name__ == '__main__':
-	q = "sports"
+	q = "sports" 
 	words_and_counts = all_words_ranked(descriptions)
 	all_tokens = [word for word,count in words_and_counts]
 	docs = tokenize_dict(descriptionDict)
