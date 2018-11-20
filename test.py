@@ -12,7 +12,6 @@ from nltk.tokenize import word_tokenize
 from nltk.stem.porter import PorterStemmer
 from scipy import spatial
 
-nltk.download('stopwords')
 stop_words = stopwords.words('english')
 stemmer = PorterStemmer()
 
