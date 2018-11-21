@@ -153,7 +153,6 @@ def similar_orgs(docID,docs,tokens_and_counts):
 	
 	return sorted(scores.items(), key=operator.itemgetter(1),reverse =True)
 
-
 if __name__ == '__main__':
 	words_and_counts = all_words_ranked(descriptions)
 	all_tokens = [word for word,count in words_and_counts]
@@ -189,5 +188,3 @@ if __name__ == '__main__':
 		print(i, nameDict[docid], s)
 		i += 1
 	print("\n")
-
-
