@@ -153,34 +153,38 @@ def similar_orgs(docID,docs,tokens_and_counts):
 	
 	return sorted(scores.items(), key=operator.itemgetter(1),reverse =True)
 
-
 if __name__ == '__main__':
-	q = "sports" 
 	words_and_counts = all_words_ranked(descriptions)
 	all_tokens = [word for word,count in words_and_counts]
 	docs = tokenize_dict(descriptionDict)
-	#print(docs)
+
+	q = "sports"
+	# q = "engineering"
+
+	print("\nSearch results for query:", q, "\n")
 	results = score(q, docs, all_tokens)
 	testid = ""
 	i = 1
 	for docid,s in results:
-		testid = docid
-		if i >= 51:
-			break
-		print(i, docid, s, "\n")
-		i += 1
+	    if s == 0:
+	        break
+	    # print(i, docid, s)
+	    print(i, nameDict[docid], s)
+	    i += 1
+	print("\n", i-1, "results found!\n\n")
 
+	# org = "tamect"
+	org = "tamumenssoccer"
 
-	print("tamect similar orgs:\n")
+	num_recommendations = 10
+	print("Top", num_recommendations ,"organizations similar to:", nameDict[org], "\n")
 	word_dict = dict(words_and_counts)
-	results2 = similar_orgs('tamect',docs,word_dict)
+	results2 = similar_orgs(org,docs,word_dict)
 	i = 1
 	for docid,s in results2:
-		testid = docid
-		if i >= 51:
+		if i >= num_recommendations+1:
 			break
-		print(i, docid, s, "\n")
+		# print(i, docid, s)
+		print(i, nameDict[docid], s)
 		i += 1
-
-
-
+	print("\n")
