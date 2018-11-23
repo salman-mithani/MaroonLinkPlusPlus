@@ -818,9 +818,11 @@ legend {
   -ms-flex-align: center;
       align-items: center;
   font-family: 'Poppins', sans-serif;
-  background-color: #800000;
+  background-color: #FFFFFF;
   background-size: cover;
   background-position: center center;
+  background-image: url("tamu.jpg");
+  background-image-rendering: pixelated;
   padding: 15px;
 }
 
