@@ -167,7 +167,7 @@ def search():
     all_tokens = [word for word,count in words_and_counts]
     docs = tokenize_dict(descriptionDict)
 
-    q =  flask.request.args.get('query')
+    q = request.args.get('query')
     # q = "engineering"
 
     print("\nSearch results for query:", q, "\n")
