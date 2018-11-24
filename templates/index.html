@@ -1,19 +1,20 @@
 <html>
   <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="author" content="colorlib.com">
     <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
-    <link href="css/main.css" rel="stylesheet" />
+    <link href="static/style.css" rel="stylesheet" />
   </head>
   <body>
-    <img src="images/logo.png" height="50">
+    <img src="static/logo.png" height="50">
     <div class="s003">
       <form>
         <div class="inner-form">
           <div class="input-field second-wrap">
-            <input id="search" type="text" placeholder="Enter Keywords?" />
+            <input type="text" name = "query" id = "query" placeholder="Enter Organization">
           </div>
           <div class="input-field third-wrap">
             <button class="btn-search" type="button">
@@ -22,10 +23,28 @@
               </svg>
             </button>
           </div>
+          <script>
+            $(document).ready(function(){
+              $('search').click(function(){
+                var text = $('#query').val();
+                $.ajax({
+                  url: "/search",
+                  type:"get",
+                  data:{query:text},
+                  success: function(response){
+                    $("results").html(response.html);
+                  },
+                  error: function(xhr){
+                    $("error").html(error.html);
+                  }
+                });
+              });
+            });
+          </script>
         </div>
       </form>
     </div>
-    <script src="js/extention/choices.js"></script>
+    <script src="static/choices.js"></script>
     <script>
       const choices = new Choices('[data-trigger]',
       {
