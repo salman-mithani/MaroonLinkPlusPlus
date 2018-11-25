@@ -11,16 +11,13 @@
   <body>
     <img src="static/logo.png" height="50">
     <div class="s003">
-        <table border = 1>
+        <div class="btn-group">
             {% for docname, score in results %}
                 {% if score != 0 %}
-                    <tr>
-                        <th> {{ docname }} </th>
-                        <td> {{ score }} </td>
-                    </tr>
+                    <button>{{ dictionary[docname] }}</button>
                 {% endif %}
             {% endfor %}
-        </table>
+        </div>
     </div>
     <script src="static/choices.js"></script>
     <script>
