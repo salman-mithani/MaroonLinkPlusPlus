@@ -157,32 +157,34 @@ def similar_orgs(docID,docs,tokens_and_counts):
 app = Flask(__name__)
 
 @app.route('/')
-def home():
+def index():
     return render_template('index.html')
 
-@app.route('/search')
-def search():
-    words_and_counts = all_words_ranked(descriptions)
-    all_tokens = [word for word,count in words_and_counts]
-    docs = tokenize_dict(descriptionDict)
+@app.route('/results',methods=['GET', 'POST'])
+def results():
+    if(request.method == 'POST'):
+        words_and_counts = all_words_ranked(descriptions)
+        all_tokens = [word for word,count in words_and_counts]
+        docs = tokenize_dict(descriptionDict)
 
-    q = request.args.get('query')
-    # q = "engineering"
+        q = request.form['query']
+        # q = "engineering"
 
-    print("\nSearch results for query:", q, "\n")
-    results = score(q, docs, all_tokens)
-    #return render_template(results,'index.html')
-    testid = ""
-    i = 1
-    for docid,s in results:
-        if s == 0:
-            break
-        # print(i, docid, s)
-        print(i, nameDict[docid], s)
-        i += 1
-    print("\n", i-1, "results found!\n\n")
-
-    # org = "tamect"
+        # print("\nSearch results for query:", q, "\n")
+        results = score(q, docs, all_tokens)
+        #return render_template(results,'index.html')
+        testid = ""
+        i = 1
+        for docid,s in results:
+            if s == 0:
+                break
+            # print(i, docid, s)
+            print(i, nameDict[docid], s)
+            i += 1
+        print("\n", i-1, "results found!\n\n")
+        return render_template('results.html', results = results)
+    
+    '''
     org = "tamumenssoccer"
 
     num_recommendations = 10
@@ -196,11 +198,7 @@ def search():
         # print(i, docid, s)
         print(i, nameDict[docid], s)
         i += 1
-    print("\n")
-
-@app.route('/results')
-def display_results():
-    return render_template('results.html')
+    print("\n")'''
 if __name__ == '__main__':
 
 	app.run()
