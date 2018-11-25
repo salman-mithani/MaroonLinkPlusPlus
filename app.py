@@ -158,8 +158,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-
-	return render_template('index.html')
+    return render_template('index.html')
 
 @app.route('/search')
 def search():
@@ -199,6 +198,9 @@ def search():
         i += 1
     print("\n")
 
+@app.route('/results')
+def display_results():
+    return render_template('results.html')
 if __name__ == '__main__':
 
 	app.run()
