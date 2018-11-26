@@ -4,9 +4,9 @@
     color: black; 
     padding: 10px 24px; 
     cursor: pointer;
-    width: 50%; 
+    width: 100%; 
     display: block;
-    align-content: center;
+    justify-content: center;
 }
 
 .btn-group button:not(:last-child) {

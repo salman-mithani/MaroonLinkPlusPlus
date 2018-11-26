@@ -182,23 +182,31 @@ def results():
             print(i, nameDict[docid], s)
             i += 1
         print("\n", i-1, "results found!\n\n")
-        return render_template('results.html', results = results, dictionary = nameDict)
-    
-    '''
-    org = "tamumenssoccer"
+        return render_template('results.html', results = results, dictionary = nameDict, query = q)
 
-    num_recommendations = 10
-    print("Top", num_recommendations ,"organizations similar to:", nameDict[org], "\n")
-    word_dict = dict(words_and_counts)
-    results2 = similar_orgs(org,docs,word_dict)
-    i = 1
-    for docid,s in results2:
-        if i >= num_recommendations+1:
-            break
-        # print(i, docid, s)
-        print(i, nameDict[docid], s)
-        i += 1
-    print("\n")'''
+@app.route('/organization',methods=['GET', 'POST'])
+def organization():
+    if(request.method == 'POST'):
+        words_and_counts = all_words_ranked(descriptions)
+        all_tokens = [word for word,count in words_and_counts]
+        docs = tokenize_dict(descriptionDict)
+        org = request.form['organization']
+        num_recommendations = 10
+        print("Top", num_recommendations ,"organizations similar to:", nameDict[org], "\n")
+        word_dict = dict(words_and_counts)
+        results = similar_orgs(org,docs,word_dict)
+        results2 = []
+        i = 1
+        for docid,s in results:
+            if i >= num_recommendations+1:
+                break
+            # print(i, docid, s)
+            print(i, nameDict[docid], s)
+            results2.append(results[i])
+            i += 1
+        print("\n")
+        return render_template('organization.html', organization = org, results = results2, dictionary = nameDict, descriptions_dict = descriptionDict)
+
 if __name__ == '__main__':
 
 	app.run()
