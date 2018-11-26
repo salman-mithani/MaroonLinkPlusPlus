@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
     <link href="static/style1.css" rel="stylesheet" />
     <style>
-      button.mybtn {
+      input.mybtn {
           width: 75%;
           margin-left: 200px;
           margin-right: 200px;
@@ -21,7 +21,7 @@
           border-radius: 5px; 
           text-align: center;
       }
-      button.mybtn:hover {
+      input.mybtn:hover {
           color: white;
           background: maroon;
           border: 1px solid #fff;
@@ -38,7 +38,10 @@
         <h3>Find Similar Organizations Below:</h3>
         {% for docid, score in results %}
             {% if score != 0 %}
-                <button class='mybtn'>{{ dictionary[docid] }}</button>
+                <form method="POST" action='organization'>
+                    <input type="hidden" value="{{ docid }}" name = 'organization'/>
+                    <input class='mybtn' type="submit" value="{{ dictionary[docid] }}"/>
+                </form>
             {% endif %}
         {% endfor %}
     </div>
