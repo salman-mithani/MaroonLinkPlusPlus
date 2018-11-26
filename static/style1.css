@@ -1,0 +1,18 @@
+.btn-group button {
+    background-color: #FFFFFF;
+    border: 1px white; 
+    color: black; 
+    padding: 10px 24px; 
+    cursor: pointer;
+    width: 50%; 
+    display: block;
+    text-align: center;
+}
+
+.btn-group button:not(:last-child) {
+    border-bottom: none; 
+}
+
+.btn-group button:hover {
+    background-color: #3e8e41;
+}

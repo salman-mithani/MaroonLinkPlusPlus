@@ -6,30 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="author" content="colorlib.com">
     <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
-    <link href="static/style.css" rel="stylesheet" />
+    <link href="static/style1.css" rel="stylesheet" />
   </head>
   <body>
     <img src="static/logo.png" height="50">
-    <div class="s003">
-        <table border = 1>
-            {% for docname, score in results %}
-                {% if score != 0 %}
-                    <tr>
-                        <th> {{ docname }} </th>
-                        <td> {{ score }} </td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        </table>
-    </div>
-    <script src="static/choices.js"></script>
-    <script>
-      const choices = new Choices('[data-trigger]',
-      {
-        searchEnabled: false,
-        itemSelectText: '',
-      });
-
-    </script>
-  </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+      <div class = "btn-group">
+        {% for docid, score in results %}
+          {% if score != 0 %}
+            <button>
+              {{dictionary[docid]}}
+            </button>
+          {% endif %}
+        {% endfor %}
+      </div>
+  </body>
 </html>

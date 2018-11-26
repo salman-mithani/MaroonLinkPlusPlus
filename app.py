@@ -182,7 +182,7 @@ def results():
             print(i, nameDict[docid], s)
             i += 1
         print("\n", i-1, "results found!\n\n")
-        return render_template('results.html', results = results)
+        return render_template('results.html', results = results, dictionary = nameDict)
     
     '''
     org = "tamumenssoccer"
