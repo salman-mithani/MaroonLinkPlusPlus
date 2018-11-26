@@ -6,7 +6,6 @@
     cursor: pointer;
     width: 50%; 
     display: block;
-    text-align: center;
 }
 
 .btn-group button:not(:last-child) {
