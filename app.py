@@ -182,6 +182,7 @@ def results():
             print(i, nameDict[docid], s)
             i += 1
         print("\n", i-1, "results found!\n\n")
+<<<<<<< HEAD
         return render_template('results.html', results = results, dictionary = nameDict, query = q)
 
 @app.route('/organization',methods=['GET', 'POST'])
@@ -207,6 +208,25 @@ def organization():
         print("\n")
         return render_template('organization.html', organization = org, results = results2, dictionary = nameDict, descriptions_dict = descriptionDict)
 
+=======
+        return render_template('results.html', results = results, dictionary = nameDict)
+    
+    '''
+    org = "tamumenssoccer"
+
+    num_recommendations = 10
+    print("Top", num_recommendations ,"organizations similar to:", nameDict[org], "\n")
+    word_dict = dict(words_and_counts)
+    results2 = similar_orgs(org,docs,word_dict)
+    i = 1
+    for docid,s in results2:
+        if i >= num_recommendations+1:
+            break
+        # print(i, docid, s)
+        print(i, nameDict[docid], s)
+        i += 1
+    print("\n")'''
+>>>>>>> 4e1acacadc07c54b100d0e783dc43fee8b629544
 if __name__ == '__main__':
 
 	app.run()
