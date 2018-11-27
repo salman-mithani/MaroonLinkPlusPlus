@@ -96,28 +96,54 @@ def all_words_ranked(revs):
     most_frequent = counts.most_common()
     return most_frequent
 
+words_and_counts = all_words_ranked(descriptions)
+all_tokens = [word for word,count in words_and_counts]
+docs = tokenize_dict(descriptionDict)
+
+doc_log_tf = {}
+df = [0] * len(all_tokens)
+
+for docid,doc_tokens in docs.items():
+	doc_counts = raw_tf(doc_tokens, all_tokens)
+	doc_log_tf[docid] = log_tf(doc_counts)
+    
+i = 0
+for t in all_tokens:
+	for docid,doc_tokens in docs.items():
+		if t in doc_tokens:
+			df[i] += 1
+	i += 1
+
+N = len(docs)
+idf = idf_t(N, df)
+
+tfidf_dict = {}
+for docid,doc_tokens in docs.items():
+	tfidf_dict[docid] = [a*b for a,b in zip(doc_log_tf.get(docid),idf)]
+
 def score(query, docs, all_tokens):
     scores = {}
-    doc_log_tf = {}
-    df = [0] * len(all_tokens)
+    # doc_log_tf = {}
+    # df = [0] * len(all_tokens)
     q_words = tokenize(query)
     q_counts = raw_tf(q_words,all_tokens)
     
-    for docid,doc_tokens in docs.items():
-        doc_counts = raw_tf(doc_tokens, all_tokens)
-        doc_log_tf[docid] = log_tf(doc_counts)
+    # for docid,doc_tokens in docs.items():
+    #     doc_counts = raw_tf(doc_tokens, all_tokens)
+    #     doc_log_tf[docid] = log_tf(doc_counts)
     
-    i = 0
-    for t in all_tokens:
-        for docid,doc_tokens in docs.items():
-            if t in doc_tokens:
-                df[i] += 1
-        i += 1
-    N = len(docs)
-    idf = idf_t(N, df)
+    # i = 0
+    # for t in all_tokens:
+    #     for docid,doc_tokens in docs.items():
+    #         if t in doc_tokens:
+    #             df[i] += 1
+    #     i += 1
+    # N = len(docs)
+    # idf = idf_t(N, df)
     
     for docid,doc_tokens in docs.items():
-        tfidf = [a*b for a,b in zip(doc_log_tf.get(docid),idf)]
+        # tfidf = [a*b for a,b in zip(doc_log_tf.get(docid),idf)]
+        tfidf = tfidf_dict[docid]
         scor = sim(q_counts,tfidf)
         scores[docid] = scor
        
@@ -163,9 +189,9 @@ def index():
 @app.route('/results',methods=['GET', 'POST'])
 def results():
     if(request.method == 'POST'):
-        words_and_counts = all_words_ranked(descriptions)
-        all_tokens = [word for word,count in words_and_counts]
-        docs = tokenize_dict(descriptionDict)
+        # words_and_counts = all_words_ranked(descriptions)
+        # all_tokens = [word for word,count in words_and_counts]
+        # docs = tokenize_dict(descriptionDict)
 
         q = request.form['query']
         # q = "engineering"
