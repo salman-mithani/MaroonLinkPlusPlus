@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import os
 import json
 import nltk
 import string
@@ -13,7 +14,7 @@ from nltk.tokenize import word_tokenize
 from nltk.stem.porter import PorterStemmer
 from scipy import spatial
 
-nltk.download('stopwords')
+# nltk.download('stopwords')
 stop_words = stopwords.words('english')
 stemmer = PorterStemmer()
 
