@@ -13,7 +13,7 @@ from nltk.tokenize import word_tokenize
 from nltk.stem.porter import PorterStemmer
 from scipy import spatial
 
-nltk.download('stopwords')
+# nltk.download('stopwords')
 stop_words = stopwords.words('english')
 stemmer = PorterStemmer()
 
@@ -235,5 +235,6 @@ def organization():
         return render_template('organization.html', organization = org, results = results2, dictionary = nameDict, descriptions_dict = descriptionDict)
 
 if __name__ == '__main__':
-
-	app.run()
+	# app.run()
+	port = int(os.environ.get('PORT', 5000))
+	app.run(host='0.0.0.0', port=port)
