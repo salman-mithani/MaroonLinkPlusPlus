@@ -60,7 +60,7 @@
   </div>
     <div>
       <br>
-      <h1>Search results for: {{ query }}</h1>
+      <h1>{{ numresults }} search results for: {{ query }}</h1>
       {% for docid, score in results %}
         {% if score != 0 %}
         <form method="POST" action='organization'>

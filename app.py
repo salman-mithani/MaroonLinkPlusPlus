@@ -208,7 +208,7 @@ def results():
             print(i, nameDict[docid], s)
             i += 1
         print("\n", i-1, "results found!\n\n")
-        return render_template('results.html', results = results, dictionary = nameDict, query = q)
+        return render_template('results.html', results = results, dictionary = nameDict, query = q, numresults = i-1)
 
 @app.route('/organization',methods=['GET', 'POST'])
 def organization():
