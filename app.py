@@ -213,9 +213,9 @@ def results():
 @app.route('/organization',methods=['GET', 'POST'])
 def organization():
     if(request.method == 'POST'):
-        words_and_counts = all_words_ranked(descriptions)
-        all_tokens = [word for word,count in words_and_counts]
-        docs = tokenize_dict(descriptionDict)
+        # words_and_counts = all_words_ranked(descriptions)
+        # all_tokens = [word for word,count in words_and_counts]
+        # docs = tokenize_dict(descriptionDict)
         org = request.form['organization']
         num_recommendations = 10
         print("Top", num_recommendations ,"organizations similar to:", nameDict[org], "\n")
