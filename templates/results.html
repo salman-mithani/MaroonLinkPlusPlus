@@ -26,11 +26,37 @@
           background: maroon;
           border: 1px solid #fff;
       }
+      input.homebtn {
+          width: 10%;
+          /*margin-left: 200px;
+          margin-right: 200px;*/
+          /*float: right;*/
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          cursor: pointer;
+          font-weight: bold;
+          font-size: 150%;
+          background: white;
+          color: black;
+          border: 1px solid maroon;
+          border-radius: 5px; 
+          text-align: center;
+      }
+      input.homebtn:hover {
+          color: white;
+          background: maroon;
+          border: 1px solid #fff;
+      }
     </style>
   </head>
   <body>
     <div>
     <img src="static/logo.png" height="50">
+    <form action = '/'>
+      <input type="hidden" value="Home"/>
+      <input class='homebtn' type="submit" value="Home"/>
+    </form>
   </div>
     <div>
       <br>
