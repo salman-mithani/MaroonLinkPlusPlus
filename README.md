@@ -8,4 +8,6 @@ Run the following command:
 python3 app.py
 ```
 
-Navigate to http://localhost:5000/
+To run locally navigate to http://localhost:5000/
+
+Website: https://maroonlinkplusplus.herokuapp.com/
