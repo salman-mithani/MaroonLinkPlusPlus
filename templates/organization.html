@@ -52,23 +52,24 @@
   </head>
   <body>
     <div>
-    <img src="static/logo.png" height="50">
-    <form action = '/'>
-      <input type="hidden" value="Home"/>
-      <input class='homebtn' type="submit" value="Home"/>
-    </form>
-  </div>
-    <div>
-      <br>
-      <h1>{{ numresults }} search results for: {{ query }}</h1>
-      {% for docid, score in results %}
-        {% if score != 0 %}
-        <form method="POST" action='organization'>
-          <input type="hidden" value="{{ docid }}" name = 'organization'/>
-          <input class='mybtn' type="submit" value="{{ dictionary[docid] }}"/>
+        <img src="static/logo.png" height="50">
+        <form action = '/'>
+          <input type="hidden" value="Home"/>
+          <input class='homebtn' type="submit" value="Home"/>
         </form>
-        {% endif %}
-      {% endfor %}
+    </div>
+    <div>
+        <h1>{{ dictionary[organization] }}</h1>
+        <h2>{{ descriptions_dict[organization] }}</h2>
+        <h3>Find Similar Organizations Below:</h3>
+        {% for docid, score in results %}
+            {% if score != 0 %}
+                <form method="POST" action='organization'>
+                    <input type="hidden" value="{{ docid }}" name = 'organization'/>
+                    <input class='mybtn' type="submit" value="{{ dictionary[docid] }}"/>
+                </form>
+            {% endif %}
+        {% endfor %}
     </div>
   </body>
 </html>

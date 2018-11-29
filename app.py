@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import os
 import json
 import nltk
 import string
@@ -13,6 +14,7 @@ from nltk.tokenize import word_tokenize
 from nltk.stem.porter import PorterStemmer
 from scipy import spatial
 
+# nltk.download('stopwords')
 stop_words = stopwords.words('english')
 stemmer = PorterStemmer()
 
@@ -96,28 +98,54 @@ def all_words_ranked(revs):
     most_frequent = counts.most_common()
     return most_frequent
 
+words_and_counts = all_words_ranked(descriptions)
+all_tokens = [word for word,count in words_and_counts]
+docs = tokenize_dict(descriptionDict)
+
+doc_log_tf = {}
+df = [0] * len(all_tokens)
+
+for docid,doc_tokens in docs.items():
+	doc_counts = raw_tf(doc_tokens, all_tokens)
+	doc_log_tf[docid] = log_tf(doc_counts)
+    
+i = 0
+for t in all_tokens:
+	for docid,doc_tokens in docs.items():
+		if t in doc_tokens:
+			df[i] += 1
+	i += 1
+
+N = len(docs)
+idf = idf_t(N, df)
+
+tfidf_dict = {}
+for docid,doc_tokens in docs.items():
+	tfidf_dict[docid] = [a*b for a,b in zip(doc_log_tf.get(docid),idf)]
+
 def score(query, docs, all_tokens):
     scores = {}
-    doc_log_tf = {}
-    df = [0] * len(all_tokens)
+    # doc_log_tf = {}
+    # df = [0] * len(all_tokens)
     q_words = tokenize(query)
     q_counts = raw_tf(q_words,all_tokens)
     
-    for docid,doc_tokens in docs.items():
-        doc_counts = raw_tf(doc_tokens, all_tokens)
-        doc_log_tf[docid] = log_tf(doc_counts)
+    # for docid,doc_tokens in docs.items():
+    #     doc_counts = raw_tf(doc_tokens, all_tokens)
+    #     doc_log_tf[docid] = log_tf(doc_counts)
     
-    i = 0
-    for t in all_tokens:
-        for docid,doc_tokens in docs.items():
-            if t in doc_tokens:
-                df[i] += 1
-        i += 1
-    N = len(docs)
-    idf = idf_t(N, df)
+    # i = 0
+    # for t in all_tokens:
+    #     for docid,doc_tokens in docs.items():
+    #         if t in doc_tokens:
+    #             df[i] += 1
+    #     i += 1
+    # N = len(docs)
+    # idf = idf_t(N, df)
     
     for docid,doc_tokens in docs.items():
-        tfidf = [a*b for a,b in zip(doc_log_tf.get(docid),idf)]
+        # tfidf = [a*b for a,b in zip(doc_log_tf.get(docid),idf)]
+        tfidf = tfidf_dict[docid]
         scor = sim(q_counts,tfidf)
         scores[docid] = scor
        
@@ -163,9 +191,9 @@ def index():
 @app.route('/results',methods=['GET', 'POST'])
 def results():
     if(request.method == 'POST'):
-        words_and_counts = all_words_ranked(descriptions)
-        all_tokens = [word for word,count in words_and_counts]
-        docs = tokenize_dict(descriptionDict)
+        # words_and_counts = all_words_ranked(descriptions)
+        # all_tokens = [word for word,count in words_and_counts]
+        # docs = tokenize_dict(descriptionDict)
 
         q = request.form['query']
         # q = "engineering"
@@ -182,23 +210,32 @@ def results():
             print(i, nameDict[docid], s)
             i += 1
         print("\n", i-1, "results found!\n\n")
-        return render_template('results.html', results = results, dictionary = nameDict)
-    
-    '''
-    org = "tamumenssoccer"
+        return render_template('results.html', results = results, dictionary = nameDict, query = q, numresults = i-1)
 
-    num_recommendations = 10
-    print("Top", num_recommendations ,"organizations similar to:", nameDict[org], "\n")
-    word_dict = dict(words_and_counts)
-    results2 = similar_orgs(org,docs,word_dict)
-    i = 1
-    for docid,s in results2:
-        if i >= num_recommendations+1:
-            break
-        # print(i, docid, s)
-        print(i, nameDict[docid], s)
-        i += 1
-    print("\n")'''
+@app.route('/organization',methods=['GET', 'POST'])
+def organization():
+    if(request.method == 'POST'):
+        # words_and_counts = all_words_ranked(descriptions)
+        # all_tokens = [word for word,count in words_and_counts]
+        # docs = tokenize_dict(descriptionDict)
+        org = request.form['organization']
+        num_recommendations = 10
+        print("Top", num_recommendations ,"organizations similar to:", nameDict[org], "\n")
+        word_dict = dict(words_and_counts)
+        results = similar_orgs(org,docs,word_dict)
+        results2 = []
+        i = 1
+        for docid,s in results:
+            if i >= num_recommendations+1:
+                break
+            # print(i, docid, s)
+            print(i, nameDict[docid], s)
+            results2.append(results[i])
+            i += 1
+        print("\n")
+        return render_template('organization.html', organization = org, results = results2, dictionary = nameDict, descriptions_dict = descriptionDict)
+
 if __name__ == '__main__':
-
-	app.run()
+	# app.run()
+	port = int(os.environ.get('PORT', 5000))
+	app.run(host='0.0.0.0', port=port)
